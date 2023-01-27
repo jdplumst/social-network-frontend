@@ -1,6 +1,15 @@
+import useLogout from "../hooks/useLogout";
+
 const OnboardingInfo = () => {
+  const { logout } = useLogout();
+
   return (
     <div className="bg-slate-300 min-h-screen flex justify-center items-center pt-10">
+      <button
+        onClick={logout}
+        className="absolute top-10 left-10 bg-red-500 hover:bg-red-700 hover:cursor-pointer text-white p-4 rounded-lg font-bold">
+        Logout
+      </button>
       <form className="flex flex-col p-10 bg-white w-1/2 h-1/3">
         <h3 className="text-2xl text-center pb-5 font-bold">
           Profile Information

@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState } from "react";
 
-interface IUser {
+export interface IUser {
   email: String;
   token: String;
 }
@@ -20,10 +20,8 @@ export const UserContextProvider = ({
   const [user, setUser] = useState({} as IUser);
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user") || "null");
-    if (user !== "null") {
-      setUser(user);
-    }
+    const storageUser = JSON.parse(localStorage.getItem("user") || "{}");
+    setUser(storageUser);
   }, []);
 
   return (
