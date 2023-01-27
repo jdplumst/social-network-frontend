@@ -8,7 +8,7 @@ Click [here](https://github.com/jdplumst/social-network-backend) for the reposit
 
 ## Built With
 
-- PostgreSQL
+- MongoDB
 - Express
 - Node.js
 - React
