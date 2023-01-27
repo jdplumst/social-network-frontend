@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { ProfileContext } from "./contexts/ProfileContext";
 import { UserContext } from "./contexts/UserContext";
 import Home from "./pages/Home";
 import Intro from "./pages/Intro";
@@ -10,7 +11,9 @@ import "./styles/index.css";
 
 const App = () => {
   const { user } = useContext(UserContext);
+  const { profile } = useContext(ProfileContext);
   console.log(user);
+  console.log(profile);
 
   return (
     <BrowserRouter>
