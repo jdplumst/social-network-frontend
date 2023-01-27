@@ -15,8 +15,10 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Intro />} /> // Intro, redirect to Home if
-        loggedin
+        <Route
+          path="/"
+          element={!user.token ? <Intro /> : <Navigate to="/home" />}
+        />
         <Route
           path="/login"
           element={!user.token ? <Login /> : <Navigate to="/home" />}

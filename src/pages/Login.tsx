@@ -21,6 +21,7 @@ const Login = () => {
     if (!response.ok) {
       setError(data.error);
     } else {
+      localStorage.setItem("user", JSON.stringify(data));
       setError(null);
       setUser(data);
     }

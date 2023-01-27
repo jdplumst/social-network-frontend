@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 
 interface IUser {
   email: String;
@@ -18,6 +18,13 @@ export const UserContextProvider = ({
   children
 }: IUserContextProviderProps) => {
   const [user, setUser] = useState({} as IUser);
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user") || "null");
+    if (user !== "null") {
+      setUser(user);
+    }
+  }, []);
 
   return (
     <UserContext.Provider value={{ user, setUser }}>
