@@ -4,7 +4,8 @@ import { UserContext } from "../contexts/UserContext";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { user, setUser } = useContext(UserContext);
+  const [error, setError] = useState(null);
+  const { setUser } = useContext(UserContext);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -12,14 +13,15 @@ const Login = () => {
     const response = await fetch("/api/user/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password })
+      body: JSON.stringify({ email: email, password: password })
     });
 
     const data = await response.json();
 
     if (!response.ok) {
-      console.log(data);
+      setError(data.error);
     } else {
+      setError(null);
       setUser(data);
     }
   };
@@ -47,6 +49,11 @@ const Login = () => {
         <button className="bg-purple-500 hover:bg-purple-700 hover:cursor-pointer text-white p-4 rounded-lg font-bold w-1/4 mx-auto">
           Log In
         </button>
+        {error && (
+          <div className="bg-pink-200 border-solid border-4 border-pink-300 mt-5 p-2 w-4/5">
+            {error}
+          </div>
+        )}
       </form>
     </div>
   );

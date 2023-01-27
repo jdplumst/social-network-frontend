@@ -4,7 +4,8 @@ import { UserContext } from "../contexts/UserContext";
 const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { user, setUser } = useContext(UserContext);
+  const [error, setError] = useState(null);
+  const { setUser } = useContext(UserContext);
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -18,8 +19,9 @@ const Signup = () => {
     const data = await response.json();
 
     if (!response.ok) {
-      console.log("ERROR!");
+      setError(data.error);
     } else {
+      setError(null);
       setUser(data);
     }
   };
@@ -47,6 +49,11 @@ const Signup = () => {
         <button className="bg-green-500 hover:bg-green-700 hover:cursor-pointer text-white p-4 rounded-lg font-bold w-1/4 mx-auto">
           Sign Up
         </button>
+        {error && (
+          <div className="bg-pink-200 border-solid border-4 border-pink-300 mx-auto mt-5 p-2 w-3/5 text-center">
+            {error}
+          </div>
+        )}
       </form>
     </div>
   );
