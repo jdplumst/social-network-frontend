@@ -1,4 +1,9 @@
+import { useContext } from "react";
+import { UserContext } from "../contexts/UserContext";
+
 const Login = () => {
+  const { user, setUser } = useContext(UserContext);
+
   return (
     <div className="bg-slate-300 min-h-screen flex justify-center items-center pt-10">
       <form className="flex flex-col p-10 bg-white w-1/2 h-1/3">
