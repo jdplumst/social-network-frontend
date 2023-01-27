@@ -42,9 +42,9 @@ const OnboardingInfo = () => {
             />
           </div>
           <div>
-            <label className="font-bold">Relationship Status:</label>
+            <label className="font-bold">Birthday:</label>
             <input
-              type="text"
+              type="date"
               className="p-2 border-solid border-2 border-slate-200 focus:border-slate-500 focus:outline-none rounded-lg block w-full"
             />
           </div>

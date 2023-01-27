@@ -9,14 +9,18 @@ import "./styles/index.css";
 
 const App = () => {
   const { user } = useContext(UserContext);
+  console.log(user);
 
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Intro />} /> // Intro, redirect to Home if
         loggedin
-        <Route path="/login" element={<Login />} /> // Login, redirect to Home
-        if loggedin
+        <Route
+          path="/login"
+          element={!user.token ? <Login /> : <OnboardingInfo />}
+        />{" "}
+        // Login, redirect to Home if loggedin
         <Route
           path="/signup"
           element={!user.token ? <Signup /> : <OnboardingInfo />}
