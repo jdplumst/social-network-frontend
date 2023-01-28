@@ -1,4 +1,5 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { UserContext } from "./UserContext";
 
 export interface IProfile {
   user_id: String;
@@ -16,28 +17,53 @@ interface IProfileContextProviderProps {
 }
 
 export const ProfileContext = createContext({
-  profile: [] as IProfile[],
-  setProfile: (value: IProfile[]) => {}
+  profiles: [] as IProfile[],
+  setProfiles: (value: IProfile[]) => {},
+  profile: {} as IProfile,
+  setProfile: (value: IProfile) => {}
 });
 
 export const ProfileContextProvider = ({
   children
 }: IProfileContextProviderProps) => {
-  const [profile, setProfile] = useState([] as IProfile[]);
+  const [profiles, setProfiles] = useState([] as IProfile[]);
+  const [profile, setProfile] = useState({} as IProfile);
+  const { user } = useContext(UserContext);
 
   const getProfiles = async () => {
-    const response = await fetch("/api/profile");
+    const response = await fetch("/api/profile", {
+      headers: { Authorization: `Bearer ${user.token}` }
+    });
     const data = await response.json();
+    setProfiles(data);
+  };
+
+  const getProfile = async () => {
+    const response = await fetch(`/api/profile/${user.id}`, {
+      headers: { Authorization: `Bearer ${user.token}` }
+    });
+    const data = await response.json();
+    // const index = profiles.findIndex((profile) => profile.user_id === user.id);
     setProfile(data);
   };
 
   useEffect(() => {
-    getProfiles();
-    console.log("hi");
-  }, []);
+    if (user.token) {
+      getProfiles();
+    }
+    console.log(profiles);
+  }, [user, profile]);
+
+  useEffect(() => {
+    if (user.token) {
+      getProfile();
+    }
+    console.log(profile);
+  }, [user]);
 
   return (
-    <ProfileContext.Provider value={{ profile, setProfile }}>
+    <ProfileContext.Provider
+      value={{ profiles, setProfiles, profile, setProfile }}>
       {children}
     </ProfileContext.Provider>
   );

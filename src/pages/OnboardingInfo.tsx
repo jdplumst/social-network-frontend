@@ -1,7 +1,39 @@
+import { useContext, useState } from "react";
+import { UserContext } from "../contexts/UserContext";
 import useLogout from "../hooks/useLogout";
 
 const OnboardingInfo = () => {
+  const [error, setError] = useState(null);
+  const { user } = useContext(UserContext);
   const { logout } = useLogout();
+
+  const createProfile = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const response = await fetch("/api/profile", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${user.token}`
+      },
+      body: JSON.stringify({
+        first_name: " ",
+        last_name: " ",
+        location: " ",
+        occupation: " ",
+        gender: " ",
+        birthday: new Date()
+      })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      setError(data.error);
+    } else {
+      setError(null);
+    }
+  };
 
   return (
     <div className="bg-slate-300 min-h-screen flex justify-center items-center pt-10">
@@ -10,7 +42,9 @@ const OnboardingInfo = () => {
         className="absolute top-10 left-10 bg-red-500 hover:bg-red-700 hover:cursor-pointer text-white p-4 rounded-lg font-bold">
         Logout
       </button>
-      <form className="flex flex-col p-10 bg-white w-1/2 h-1/3">
+      <form
+        onSubmit={createProfile}
+        className="flex flex-col p-10 bg-white w-1/2 h-1/3">
         <h3 className="text-2xl text-center pb-5 font-bold">
           Profile Information
         </h3>
