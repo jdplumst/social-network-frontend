@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ProfileContext } from "./contexts/ProfileContext";
 import { UserContext } from "./contexts/UserContext";
@@ -6,40 +6,116 @@ import Home from "./pages/Home";
 import Intro from "./pages/Intro";
 import Login from "./pages/Login";
 import OnboardingInfo from "./pages/OnboardingInfo";
+import OnboardingPicture from "./pages/OnboardingPicture";
 import Signup from "./pages/Signup";
 import "./styles/index.css";
 
 const App = () => {
+  // const [access, setAccess] = useState("");
+  let access = "";
   const { user } = useContext(UserContext);
   const { profiles, profile } = useContext(ProfileContext);
   console.log(user);
   console.log(profiles);
   console.log(profile);
+  console.log(!profile.profile_completed);
+
+  if (!user.token) {
+    access = "not logged in";
+  } else if (user.token && !profile.first_name) {
+    access = "logged in but not started onboarding";
+  } else if (user.token && !profile.profile_completed) {
+    access = "logged in but not finished onboarding";
+  } else if (user.token && profile.profile_completed) {
+    access = "logged in and finished onboarding";
+  }
 
   return (
     <BrowserRouter>
       <Routes>
         <Route
           path="/"
-          element={!user.token ? <Intro /> : <Navigate to="/home" />}
+          element={
+            access === "not logged in" ? (
+              <Intro />
+            ) : access === "logged in but not started onboarding" ? (
+              <Navigate to="/onboarding/info" />
+            ) : access === "logged in but not finished onboarding" ? (
+              <Navigate to="/onboarding/picture" />
+            ) : (
+              <Navigate to="/home" />
+            )
+          }
         />
         <Route
           path="/login"
-          element={!user.token ? <Login /> : <Navigate to="/home" />}
+          element={
+            access === "not logged in" ? (
+              <Login />
+            ) : access === "logged in but not started onboarding" ? (
+              <Navigate to="/onboarding/info" />
+            ) : access === "logged in but not finished onboarding" ? (
+              <Navigate to="/onboarding/picture" />
+            ) : (
+              <Navigate to="/home" />
+            )
+          }
         />
         <Route
           path="/signup"
           element={
-            !user.token ? <Signup /> : <Navigate to="/onboarding/info" />
+            access === "not logged in" ? (
+              <Signup />
+            ) : access === "logged in but not started onboarding" ? (
+              <Navigate to="/onboarding/info" />
+            ) : access === "logged in but not finished onboarding" ? (
+              <Navigate to="/onboarding/picture" />
+            ) : (
+              <Navigate to="/home" />
+            )
           }
         />
         <Route
           path="/onboarding/info"
-          element={user.token ? <OnboardingInfo /> : <Navigate to="/" />}
+          element={
+            access === "logged in but not started onboarding" ? (
+              <OnboardingInfo />
+            ) : access === "not logged in" ? (
+              <Navigate to="/" />
+            ) : access === "logged in but not finished onboarding" ? (
+              <Navigate to="/onboarding/picture" />
+            ) : (
+              <Navigate to="/home" />
+            )
+          }
+        />
+        <Route
+          path="/onboarding/picture"
+          element={
+            access === "logged in but not finished onboarding" ? (
+              <OnboardingPicture />
+            ) : access === "logged in but not started onboarding" ? (
+              <Navigate to="/onboarding/info" />
+            ) : access === "not logged in" ? (
+              <Navigate to="/" />
+            ) : (
+              <Navigate to="/home" />
+            )
+          }
         />
         <Route
           path="/home"
-          element={user.token ? <Home /> : <Navigate to="/" />}
+          element={
+            access === "logged in and finished onboarding" ? (
+              <Intro />
+            ) : access === "logged in but not started onboarding" ? (
+              <Navigate to="/onboarding/info" />
+            ) : access === "logged in but not finished onboarding" ? (
+              <Navigate to="/onboarding/picture" />
+            ) : (
+              <Navigate to="/" />
+            )
+          }
         />
       </Routes>
     </BrowserRouter>
