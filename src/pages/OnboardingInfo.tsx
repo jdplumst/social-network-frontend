@@ -1,10 +1,18 @@
 import { useContext, useState } from "react";
+import { ProfileContext } from "../contexts/ProfileContext";
 import { UserContext } from "../contexts/UserContext";
 import useLogout from "../hooks/useLogout";
 
 const OnboardingInfo = () => {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [location, setLocation] = useState("");
+  const [occupation, setOccupation] = useState("");
+  const [gender, setGender] = useState("");
+  const [birthday, setBirthday] = useState("");
   const [error, setError] = useState(null);
   const { user } = useContext(UserContext);
+  const { setProfile } = useContext(ProfileContext);
   const { logout } = useLogout();
 
   const createProfile = async (e: React.FormEvent) => {
@@ -17,12 +25,12 @@ const OnboardingInfo = () => {
         "Authorization": `Bearer ${user.token}`
       },
       body: JSON.stringify({
-        first_name: " ",
-        last_name: " ",
-        location: " ",
-        occupation: " ",
-        gender: " ",
-        birthday: new Date()
+        first_name: firstName,
+        last_name: lastName,
+        location: location,
+        occupation: occupation,
+        gender: gender,
+        birthday: birthday
       })
     });
 
@@ -32,6 +40,7 @@ const OnboardingInfo = () => {
       setError(data.error);
     } else {
       setError(null);
+      setProfile(data);
     }
   };
 
@@ -53,6 +62,8 @@ const OnboardingInfo = () => {
             <label className="font-bold">First Name:</label>
             <input
               type="text"
+              onChange={(e) => setFirstName(e.target.value)}
+              value={firstName}
               className="p-2 border-solid border-2 border-slate-200 focus:border-slate-500 focus:outline-none rounded-lg block w-full"
             />
           </div>
@@ -60,6 +71,8 @@ const OnboardingInfo = () => {
             <label className="font-bold">Last Name:</label>
             <input
               type="text"
+              onChange={(e) => setLastName(e.target.value)}
+              value={lastName}
               className="p-2 border-solid border-2 border-slate-200 focus:border-slate-500 focus:outline-none rounded-lg block w-full"
             />
           </div>
@@ -67,6 +80,8 @@ const OnboardingInfo = () => {
             <label className="font-bold">Location:</label>
             <input
               type="text"
+              onChange={(e) => setLocation(e.target.value)}
+              value={location}
               className="p-2 border-solid border-2 border-slate-200 focus:border-slate-500 focus:outline-none rounded-lg block w-full"
             />
           </div>
@@ -74,6 +89,8 @@ const OnboardingInfo = () => {
             <label className="font-bold">Occupation:</label>
             <input
               type="text"
+              onChange={(e) => setOccupation(e.target.value)}
+              value={occupation}
               className="p-2 border-solid border-2 border-slate-200 focus:border-slate-500 focus:outline-none rounded-lg block w-full"
             />
           </div>
@@ -81,6 +98,8 @@ const OnboardingInfo = () => {
             <label className="font-bold">Gender:</label>
             <input
               type="text"
+              onChange={(e) => setGender(e.target.value)}
+              value={gender}
               className="p-2 border-solid border-2 border-slate-200 focus:border-slate-500 focus:outline-none rounded-lg block w-full"
             />
           </div>
@@ -88,6 +107,8 @@ const OnboardingInfo = () => {
             <label className="font-bold">Birthday:</label>
             <input
               type="date"
+              onChange={(e) => setBirthday(e.target.value)}
+              value={birthday}
               className="p-2 border-solid border-2 border-slate-200 focus:border-slate-500 focus:outline-none rounded-lg block w-full"
             />
           </div>
@@ -95,6 +116,11 @@ const OnboardingInfo = () => {
         <button className="bg-purple-500 hover:bg-purple-700 hover:cursor-pointer text-white p-4 rounded-lg font-bold w-1/4 mx-auto mt-10">
           Next
         </button>
+        {error && (
+          <div className="bg-pink-200 border-solid border-4 border-pink-300 mx-auto mt-5 p-2 w-3/5 text-center">
+            {error}
+          </div>
+        )}
       </form>
     </div>
   );

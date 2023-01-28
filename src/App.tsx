@@ -12,9 +12,9 @@ import "./styles/index.css";
 const App = () => {
   const { user } = useContext(UserContext);
   const { profiles, profile } = useContext(ProfileContext);
-  // console.log(user);
-  // console.log(profiles);
-  // console.log(profile);
+  console.log(user);
+  console.log(profiles);
+  console.log(profile);
 
   return (
     <BrowserRouter>

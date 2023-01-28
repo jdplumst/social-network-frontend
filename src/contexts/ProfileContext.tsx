@@ -51,14 +51,14 @@ export const ProfileContextProvider = ({
     if (user.token) {
       getProfiles();
     }
-    console.log(profiles);
+    console.log("Fetched all profiles!");
   }, [user, profile]);
 
   useEffect(() => {
     if (user.token) {
       getProfile();
     }
-    console.log(profile);
+    console.log("Fetched user profile!");
   }, [user]);
 
   return (
