@@ -1,7 +1,14 @@
+import { useEffect } from "react";
+import useGetProfiles from "../hooks/useGetProfiles";
 import useLogout from "../hooks/useLogout";
 
 const Home = () => {
   const { logout } = useLogout();
+  const { getProfiles } = useGetProfiles();
+
+  useEffect(() => {
+    getProfiles();
+  }, []);
 
   return (
     <div>

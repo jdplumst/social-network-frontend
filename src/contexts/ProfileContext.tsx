@@ -31,33 +31,17 @@ export const ProfileContextProvider = ({
   const { user } = useContext(UserContext);
 
   useEffect(() => {
-    const getProfiles = async () => {
-      const response = await fetch("/api/profile", {
-        headers: { Authorization: `Bearer ${user.token}` }
-      });
-      const data = await response.json();
-      setProfiles(data);
-    };
-
-    if (user.token) {
-      getProfiles();
-      console.log("Fetched all profiles!");
-    }
-  }, [user, profile]);
-
-  useEffect(() => {
     const getProfile = async () => {
       const response = await fetch(`/api/profile/${user.id}`, {
         headers: { Authorization: `Bearer ${user.token}` }
       });
       const data = await response.json();
       setProfile(data);
+      console.log("fetched profile!");
     };
 
     if (user.token) {
       getProfile();
-      console.log("Fetched user profile!");
-      console.log(user.id);
     }
   }, [user]);
 
