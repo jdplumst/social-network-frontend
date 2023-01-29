@@ -20,7 +20,7 @@ const App = () => {
 
   if (!user.token) {
     access = "not logged in";
-  } else if (user.token && !profile) {
+  } else if (user.token && (!profile || !profile.first_name)) {
     access = "logged in but not started onboarding";
   } else if (user.token && !profile.profile_completed) {
     access = "logged in but not finished onboarding";
