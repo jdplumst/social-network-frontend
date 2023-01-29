@@ -1,9 +1,36 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { ProfileContext } from "../contexts/ProfileContext";
+import { UserContext } from "../contexts/UserContext";
 import useLogout from "../hooks/useLogout";
 
 const OnboardingPicture = () => {
   const [profilePicture, setProfilePicture] = useState("earth");
+  const [error, setError] = useState(null);
+  const { user } = useContext(UserContext);
+  const { setProfile } = useContext(ProfileContext);
   const { logout } = useLogout();
+
+  const finishOnboarding = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const response = await fetch(`/api/profile/picture/${user.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${user.token}`
+      },
+      body: JSON.stringify({ profile_picture: profilePicture })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      setError(data.error);
+    } else {
+      setError(null);
+      setProfile(data);
+    }
+  };
 
   return (
     <div className="bg-slate-300 min-h-screen flex justify-center items-center pt-10">
@@ -90,9 +117,16 @@ const OnboardingPicture = () => {
             alt="car"
           />
         </div>
-        <button className="bg-purple-500 hover:bg-purple-700 hover:cursor-pointer text-white p-4 rounded-lg font-bold w-1/4 mx-auto mt-10">
+        <button
+          onClick={finishOnboarding}
+          className="bg-purple-500 hover:bg-purple-700 hover:cursor-pointer text-white p-4 rounded-lg font-bold w-1/4 mx-auto mt-10">
           Finish Signup
         </button>
+        {error && (
+          <div className="bg-pink-200 border-solid border-4 border-pink-300 mx-auto mt-5 p-2 w-3/5 text-center">
+            {error}
+          </div>
+        )}
       </div>
     </div>
   );
