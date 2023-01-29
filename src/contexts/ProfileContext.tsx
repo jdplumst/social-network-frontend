@@ -30,35 +30,35 @@ export const ProfileContextProvider = ({
   const [profile, setProfile] = useState({} as IProfile);
   const { user } = useContext(UserContext);
 
-  const getProfiles = async () => {
-    const response = await fetch("/api/profile", {
-      headers: { Authorization: `Bearer ${user.token}` }
-    });
-    const data = await response.json();
-    setProfiles(data);
-  };
-
-  const getProfile = async () => {
-    const response = await fetch(`/api/profile/${user.id}`, {
-      headers: { Authorization: `Bearer ${user.token}` }
-    });
-    const data = await response.json();
-    // const index = profiles.findIndex((profile) => profile.user_id === user.id);
-    setProfile(data);
-  };
-
   useEffect(() => {
+    const getProfiles = async () => {
+      const response = await fetch("/api/profile", {
+        headers: { Authorization: `Bearer ${user.token}` }
+      });
+      const data = await response.json();
+      setProfiles(data);
+    };
+
     if (user.token) {
       getProfiles();
+      console.log("Fetched all profiles!");
     }
-    console.log("Fetched all profiles!");
   }, [user, profile]);
 
   useEffect(() => {
+    const getProfile = async () => {
+      const response = await fetch(`/api/profile/${user.id}`, {
+        headers: { Authorization: `Bearer ${user.token}` }
+      });
+      const data = await response.json();
+      setProfile(data);
+    };
+
     if (user.token) {
       getProfile();
+      console.log("Fetched user profile!");
+      console.log(user.id);
     }
-    console.log("Fetched user profile!");
   }, [user]);
 
   return (

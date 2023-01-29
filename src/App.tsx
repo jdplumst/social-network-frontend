@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ProfileContext } from "./contexts/ProfileContext";
 import { UserContext } from "./contexts/UserContext";
@@ -11,18 +11,16 @@ import Signup from "./pages/Signup";
 import "./styles/index.css";
 
 const App = () => {
-  // const [access, setAccess] = useState("");
   let access = "";
   const { user } = useContext(UserContext);
   const { profiles, profile } = useContext(ProfileContext);
   console.log(user);
   console.log(profiles);
   console.log(profile);
-  console.log(!profile.profile_completed);
 
   if (!user.token) {
     access = "not logged in";
-  } else if (user.token && !profile.first_name) {
+  } else if (user.token && !profile) {
     access = "logged in but not started onboarding";
   } else if (user.token && !profile.profile_completed) {
     access = "logged in but not finished onboarding";
@@ -107,7 +105,7 @@ const App = () => {
           path="/home"
           element={
             access === "logged in and finished onboarding" ? (
-              <Intro />
+              <Home />
             ) : access === "logged in but not started onboarding" ? (
               <Navigate to="/onboarding/info" />
             ) : access === "logged in but not finished onboarding" ? (
