@@ -32,9 +32,9 @@ const Navbar = () => {
             id="free-solo-demo"
             freeSolo
             className="bg-white"
-            options={profiles.map(
-              (profile) => profile.first_name + " " + profile.last_name
-            )}
+            options={profiles
+              .filter((profile) => profile.profile_completed)
+              .map((profile) => profile.first_name + " " + profile.last_name)}
             renderInput={(params) => (
               <TextField
                 {...params}
