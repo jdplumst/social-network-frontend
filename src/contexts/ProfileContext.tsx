@@ -2,14 +2,15 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { UserContext } from "./UserContext";
 
 export interface IProfile {
-  user_id: String;
-  first_name: String;
-  last_name: String;
-  location: String;
-  occupation: String;
-  gender: String;
+  user_id: string;
+  first_name: string;
+  last_name: string;
+  location: string;
+  occupation: string;
+  gender: string;
   birthday: Date;
-  profile_completed: Boolean;
+  profile_picture: string;
+  profile_completed: boolean;
 }
 
 interface IProfileContextProviderProps {

@@ -1,9 +1,9 @@
 import React, { createContext, useEffect, useState } from "react";
 
 export interface IUser {
-  id: String;
-  email: String;
-  token: String;
+  id: string;
+  email: string;
+  token: string;
 }
 
 interface IUserContextProviderProps {
