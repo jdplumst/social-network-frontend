@@ -42,7 +42,6 @@ const Navbar = () => {
             </button>
           </div>
         </div>
-
         <span>
           {profile.first_name} {profile.last_name}
         </span>

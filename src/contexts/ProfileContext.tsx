@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { UserContext } from "./UserContext";
+import { IUser, UserContext } from "./UserContext";
 
 export interface IProfile {
   user_id: string;
@@ -29,7 +29,7 @@ export const ProfileContextProvider = ({
 }: IProfileContextProviderProps) => {
   const [profiles, setProfiles] = useState([] as IProfile[]);
   const [profile, setProfile] = useState({} as IProfile);
-  const { user } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
 
   useEffect(() => {
     const getProfile = async () => {
@@ -37,14 +37,19 @@ export const ProfileContextProvider = ({
         headers: { Authorization: `Bearer ${user.token}` }
       });
       const data = await response.json();
-      setProfile(data);
-      console.log("fetched profile!");
+      if (!response.ok) {
+        setUser({} as IUser);
+        localStorage.removeItem("user");
+      } else {
+        setProfile(data);
+        console.log("fetched profile!");
+      }
     };
 
     if (user.token) {
       getProfile();
     }
-  }, [user]);
+  }, [user, setUser]);
 
   return (
     <ProfileContext.Provider
