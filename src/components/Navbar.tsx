@@ -1,13 +1,15 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
-import { useState } from "react";
 import { ProfileContext } from "../contexts/ProfileContext";
 import useLogout from "../hooks/useLogout";
+import TextField from "@mui/material/TextField";
+import Stack from "@mui/material/Stack";
+import Autocomplete from "@mui/material/Autocomplete";
 
 const Navbar = () => {
   const [dropdown, setDropdown] = useState(false);
   const { logout } = useLogout();
-  const { profile } = useContext(ProfileContext);
+  const { profile, profiles } = useContext(ProfileContext);
 
   const toggleDropdown = (e: MouseEvent) => {
     if ((e.target as HTMLElement).classList.contains("picture") && !dropdown) {
@@ -24,6 +26,30 @@ const Navbar = () => {
       <Link to="/">
         <h1 className="text-4xl">Social Network</h1>
       </Link>
+      <div className="text-white">
+        <Stack spacing={2} sx={{ width: 300 }}>
+          <Autocomplete
+            id="free-solo-demo"
+            freeSolo
+            className="bg-white"
+            options={profiles.map(
+              (profile) => profile.first_name + " " + profile.last_name
+            )}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                placeholder="Search User"
+                InputLabelProps={{
+                  shrink: false,
+                  style: {
+                    color: "black"
+                  }
+                }}
+              />
+            )}
+          />
+        </Stack>
+      </div>
       <div className="flex items-center gap-10">
         <div className="relative">
           <img
@@ -37,7 +63,7 @@ const Navbar = () => {
             } absolute z-10 flex flex-col divide-solid divide-y-2 divide-slate-300 border-2 border-solid border-slate-300 bg-white w-32`}>
             <button className="hover:bg-slate-300">View Profile</button>
             <button className="hover:bg-slate-300">Edit Profile</button>
-            <button className="hover:bg-slate-300" onClick={logout}>
+            <button className="hover:bg-slate-300" onMouseDown={logout}>
               Logout
             </button>
           </div>
