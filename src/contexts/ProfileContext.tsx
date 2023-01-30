@@ -28,7 +28,8 @@ export const ProfileContextProvider = ({
   children
 }: IProfileContextProviderProps) => {
   const [profiles, setProfiles] = useState([] as IProfile[]);
-  const [profile, setProfile] = useState({} as IProfile);
+  // const [profile, setProfile] = useState({} as IProfile);
+  const [profile, setProfile] = useState({ user_id: "-1" } as IProfile);
   const { user, setUser } = useContext(UserContext);
 
   useEffect(() => {
