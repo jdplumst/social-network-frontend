@@ -9,3 +9,7 @@
     font-family: "Roboto", sans-serif;
   }
 }
+
+.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: black !important;
+}
