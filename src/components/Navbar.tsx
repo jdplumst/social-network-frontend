@@ -22,7 +22,7 @@ const Navbar = () => {
   document.addEventListener("click", toggleDropdown);
 
   return (
-    <nav className="relative w-full flex flex-wrap items-center justify-between px-14 py-4 bg-purple-500 shadow-lg navbar navbar-expand-lg navbar-light border-b-2 border-black border-solid">
+    <nav className="relative h-1/6 w-full flex flex-wrap items-center justify-between px-14 py-4 bg-purple-500 shadow-lg navbar navbar-expand-lg navbar-light border-b-2 border-black border-solid">
       <Link to="/">
         <h1 className="text-4xl">Social Network</h1>
       </Link>
