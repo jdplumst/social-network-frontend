@@ -5,8 +5,6 @@ export interface IPost {
   id: number;
   user_id: number;
   description: string;
-  comments: number;
-  likes: number;
   create_date: Date;
   modify_date: Date;
   first_name: string;
@@ -60,9 +58,9 @@ const Post = (props: IPost) => {
       <hr className="border-black"></hr>
       <div className="flex">
         <div className="w-1/2 text-center my-2 border-r-2 border-black">
-          Likes: {props.likes}
+          Likes: 0
         </div>
-        <div className="w-1/2 text-center my-2">Comments: {props.comments}</div>
+        <div className="w-1/2 text-center my-2">Comments: 0</div>
       </div>
       <hr className="border-black"></hr>
       <div className="flex items-center mt-2 mx-2">
