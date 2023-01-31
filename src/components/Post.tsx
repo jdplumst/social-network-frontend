@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ProfileContext } from "../contexts/ProfileContext";
 
 export interface IPost {
@@ -13,6 +13,7 @@ export interface IPost {
 }
 
 const Post = (props: IPost) => {
+  const [load, setLoad] = useState(true);
   const { profile } = useContext(ProfileContext);
 
   // Format current date
@@ -36,6 +37,8 @@ const Post = (props: IPost) => {
   const currMonth = months[currDate.getUTCMonth()];
   const currWeek = weeks[currDate.getUTCDay()];
   const currDay = currDate.getUTCDate();
+
+  useEffect(() => setLoad(false));
 
   return (
     <div className="border-2 border-slate-300 rounded-lg mb-5 p-2">
