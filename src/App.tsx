@@ -13,7 +13,7 @@ import "./styles/index.css";
 const App = () => {
   let access = "";
   const { user } = useContext(UserContext);
-  const { profiles, profile } = useContext(ProfileContext);
+  const { profile } = useContext(ProfileContext);
 
   if (!user.token) {
     access = "not logged in";

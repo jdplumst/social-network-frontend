@@ -1,5 +1,4 @@
 import { useContext } from "react";
-import { text } from "stream/consumers";
 import { ProfileContext } from "../contexts/ProfileContext";
 
 export interface IPost {
@@ -72,7 +71,6 @@ const Post = (props: IPost) => {
           alt="user-pic"
           className="w-12 h-12 inline"
         />
-        {/* <input type="text" className="ml-5 w-4/5 border-2 border-black" /> */}
         <textarea
           maxLength={100}
           className="ml-5 w-4/5 p-1 border-2 border-black"></textarea>

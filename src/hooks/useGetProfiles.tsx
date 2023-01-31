@@ -7,7 +7,7 @@ const useGetProfiles = () => {
   const { setProfiles } = useContext(ProfileContext);
 
   const getProfiles = async () => {
-    const response = await fetch("/api/profile", {
+    const response = await fetch("/api/profiles", {
       headers: { Authorization: `Bearer ${user.token}` }
     });
     const data = await response.json();

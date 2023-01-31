@@ -34,7 +34,7 @@ export const ProfileContextProvider = ({
 
   useEffect(() => {
     const getProfile = async () => {
-      const response = await fetch(`/api/profile/${user.id}`, {
+      const response = await fetch(`/api/profiles/${user.id}`, {
         headers: { Authorization: `Bearer ${user.token}` }
       });
       const data = await response.json();

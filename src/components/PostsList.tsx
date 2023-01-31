@@ -8,7 +8,7 @@ const PostsList = () => {
 
   useEffect(() => {
     const getPosts = async () => {
-      const response = await fetch("/api/post", {
+      const response = await fetch("/api/posts", {
         headers: { Authorization: `Bearer ${user.token}` }
       });
       const data = await response.json();

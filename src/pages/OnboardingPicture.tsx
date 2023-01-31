@@ -13,7 +13,7 @@ const OnboardingPicture = () => {
   const finishOnboarding = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const response = await fetch(`/api/profile/picture/${user.id}`, {
+    const response = await fetch(`/api/profiles/picture/${user.id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",

@@ -18,7 +18,7 @@ const OnboardingInfo = () => {
   const createProfile = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const response = await fetch("/api/profile", {
+    const response = await fetch("/api/profiles", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
