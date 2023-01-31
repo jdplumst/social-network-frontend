@@ -72,7 +72,10 @@ const Post = (props: IPost) => {
           alt="user-pic"
           className="w-12 h-12 inline"
         />
-        <input type="text" className="ml-5 w-4/5 border-2 border-black" />
+        {/* <input type="text" className="ml-5 w-4/5 border-2 border-black" /> */}
+        <textarea
+          maxLength={100}
+          className="ml-5 w-4/5 p-1 border-2 border-black"></textarea>
         <button className="ml-5 bg-purple-500 hover:bg-purple-700 hover:cursor-pointer text-white px-4 py-2 rounded-lg font-bold">
           Reply
         </button>
