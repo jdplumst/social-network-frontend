@@ -1,7 +1,7 @@
 import React, { createContext, useEffect, useState } from "react";
 
 export interface IUser {
-  id: string;
+  id: number;
   email: string;
   token: string;
 }
@@ -23,7 +23,7 @@ export const UserContextProvider = ({
   useEffect(() => {
     const storageUser = JSON.parse(localStorage.getItem("user") || "{}");
     setUser(storageUser);
-    console.log(user);
+    console.log("got user from local storage!");
   }, []);
 
   return (

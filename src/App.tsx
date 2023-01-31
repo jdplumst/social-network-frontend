@@ -14,9 +14,6 @@ const App = () => {
   let access = "";
   const { user } = useContext(UserContext);
   const { profiles, profile } = useContext(ProfileContext);
-  console.log(user);
-  console.log(profiles);
-  console.log(profile);
 
   if (!user.token) {
     access = "not logged in";
