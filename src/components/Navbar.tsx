@@ -19,7 +19,7 @@ const Navbar = () => {
     }
   };
 
-  document.addEventListener("mousedown", toggleDropdown);
+  document.addEventListener("click", toggleDropdown);
 
   return (
     <nav className="relative w-full flex flex-wrap items-center justify-between px-14 py-4 bg-purple-500 shadow-lg navbar navbar-expand-lg navbar-light border-b-2 border-black border-solid">
@@ -63,7 +63,7 @@ const Navbar = () => {
             } absolute z-10 flex flex-col divide-solid divide-y-2 divide-slate-300 border-2 border-solid border-slate-300 bg-white w-32`}>
             <button className="hover:bg-slate-300">View Profile</button>
             <button className="hover:bg-slate-300">Edit Profile</button>
-            <button className="hover:bg-slate-300" onMouseDown={logout}>
+            <button className="hover:bg-slate-300" onClick={logout}>
               Logout
             </button>
           </div>

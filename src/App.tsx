@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { IProfile, ProfileContext } from "./contexts/ProfileContext";
+import { ProfileContext } from "./contexts/ProfileContext";
 import { UserContext } from "./contexts/UserContext";
 import Home from "./pages/Home";
 import Intro from "./pages/Intro";
