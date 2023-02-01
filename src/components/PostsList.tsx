@@ -1,7 +1,9 @@
 import { useContext, useEffect, useState } from "react";
 import { ProfileContext } from "../contexts/ProfileContext";
-import { IUser, UserContext } from "../contexts/UserContext";
+import { UserContext } from "../contexts/UserContext";
 import Post, { IPost } from "./Post";
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
 
 const PostsList = () => {
   const [description, setDescription] = useState("");
@@ -10,9 +12,23 @@ const PostsList = () => {
   const { user } = useContext(UserContext);
   const { profile } = useContext(ProfileContext);
 
+  // Pagination
+  const [firstPost, setFirstPost] = useState(0);
+  const [lastPost, setLastPost] = useState(9);
+  let currPosts = posts.slice(firstPost, lastPost);
+
   const handlePostInput = (e: React.FormEvent<HTMLTextAreaElement>) => {
     setDescription((e.target as HTMLTextAreaElement).value);
     setPostLength((e.target as HTMLTextAreaElement).value.length);
+  };
+
+  const changePage = (e: React.ChangeEvent<unknown>, page: number) => {
+    if (page === 1) {
+      setFirstPost(0);
+    } else {
+      setFirstPost((page - 1) * 10 - 1);
+    }
+    setLastPost(page * 10 - 1);
   };
 
   const createPost = async () => {
@@ -78,9 +94,18 @@ const PostsList = () => {
           </button>
         </div>
       </div>
-      {posts.map((post) => (
+      {currPosts.map((post) => (
         <Post key={post.id} {...post} />
       ))}
+      <div className="flex justify-center">
+        <Stack spacing={2}>
+          <Pagination
+            count={Math.ceil(posts.length / 10)}
+            color="secondary"
+            onChange={changePage}
+          />
+        </Stack>
+      </div>
     </div>
   );
 };
