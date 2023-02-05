@@ -53,7 +53,7 @@ const Navbar = () => {
       <div className="flex items-center gap-10">
         <div className="relative">
           <img
-            className="picture w-32 h-24"
+            className="picture w-32 h-24 hover:cursor-pointer"
             src={profile.profile_picture}
             alt="profilepic"
           />
