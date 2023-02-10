@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { ProfileContext } from "../contexts/ProfileContext";
 import { UserContext } from "../contexts/UserContext";
-import Post, { IPost } from "./Post";
+import Post, { IPost, ILike } from "./Post";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 
@@ -9,6 +9,7 @@ const PostsList = () => {
   const [description, setDescription] = useState("");
   const [postLength, setPostLength] = useState(0);
   const [posts, setPosts] = useState([] as IPost[]);
+  const [likes, setLikes] = useState([] as ILike[]);
   const { user } = useContext(UserContext);
   const { profile } = useContext(ProfileContext);
 
@@ -66,15 +67,25 @@ const PostsList = () => {
   };
 
   useEffect(() => {
-    const getPosts = async () => {
-      const response = await fetch("/api/posts", {
+    const getPostsAndLikes = async () => {
+      // Fetch Posts
+      const postsResponse = await fetch("/api/posts", {
         headers: { Authorization: `Bearer ${user.token}` }
       });
-      const data = await response.json();
-      setPosts(data);
+      const postsData = await postsResponse.json();
+      setPosts(postsData);
       console.log("fetched all posts!");
+
+      // Fetch Likes
+      const likesResponse = await fetch(`/api/likes`, {
+        headers: { Authorization: `Bearer ${user.token}` }
+      });
+      const likesData = await likesResponse.json();
+      setLikes(likesData);
+      console.log("fetched all likes!");
     };
-    getPosts();
+
+    getPostsAndLikes();
   }, [user]);
 
   return (
@@ -95,7 +106,11 @@ const PostsList = () => {
         </div>
       </div>
       {currPosts.map((post) => (
-        <Post key={post.id} {...post} />
+        <Post
+          key={post.id}
+          post={post}
+          likes={likes.filter((like) => like.post_id === post.id)}
+        />
       ))}
       <div className="flex justify-center">
         <Stack spacing={2}>
