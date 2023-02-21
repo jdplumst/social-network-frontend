@@ -36,7 +36,6 @@ const Post = (props: IProps) => {
   const [liked, setLiked] = useState(false);
   const [stateLikes, setStateLikes] = useState(likes);
   const [showLikes, setShowLikes] = useState(false);
-  const [error, setError] = useState(null);
   const { user } = useContext(UserContext);
   const { profile } = useContext(ProfileContext);
 
@@ -170,10 +169,10 @@ const Post = (props: IProps) => {
         <span className="text-2xl">{post.description}</span>
         <button
           onClick={handleLike}
-          className={`ml-5 bg-purple-500 hover:bg-purple-700 hover:cursor-pointer ${
+          className={`ml-5 hover:cursor-pointer ${
             liked
-              ? `bg-gradient-to-tr from-cyan-500 via-blue-500 to-purple-500`
-              : `bg-purple-500`
+              ? `bg-gradient-to-tr from-cyan-500 via-blue-500 to-purple-500 hover:bg-gradient-to-tr hover:from-cyan-700 hover:via-blue-700 hover:to-purple-700`
+              : `bg-purple-500 hover:bg-purple-700`
           } text-white px-2 py-1 rounded-lg font-bold`}>
           {liked ? `Liked!` : "Like"}
         </button>
