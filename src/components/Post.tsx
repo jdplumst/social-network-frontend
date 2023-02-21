@@ -1,5 +1,8 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { ProfileContext } from "../contexts/ProfileContext";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Modal from "@mui/material/Modal";
 
 export interface IPost {
   id: number;
@@ -13,6 +16,7 @@ export interface IPost {
 }
 
 export interface ILike {
+  id: number;
   post_id: number;
   first_name: string;
   last_name: string;
@@ -22,12 +26,12 @@ export interface ILike {
 interface IProps {
   post: IPost;
   likes: ILike[];
-  displayLikes: (id: number) => void;
 }
 
 const Post = (props: IProps) => {
-  const { post, likes, displayLikes } = props;
+  const { post, likes } = props;
   // const [load, setLoad] = useState(true);
+  const [showLikes, setShowLikes] = useState(false);
   const { profile } = useContext(ProfileContext);
 
   // Format current date
@@ -52,8 +56,45 @@ const Post = (props: IProps) => {
   const currWeek = weeks[currDate.getUTCDay()];
   const currDay = currDate.getUTCDate();
 
+  // Open Likes Modal
+  const handleOpenLikes = () => {
+    setShowLikes(true);
+  };
+
+  // Close Likes Modal
+  const handleCloseLikes = () => {
+    setShowLikes(false);
+  };
+
   return (
     <div className="border-2 border-slate-300 rounded-lg mb-5 p-2">
+      {/* Modal to display likes list */}
+      <Modal
+        open={showLikes}
+        onClose={handleCloseLikes}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description">
+        <Box className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-black text-white p-4">
+          <Typography id="modal-modal-title" variant="h6" component="h2" mb={2}>
+            People who have liked this post:
+          </Typography>
+          <Typography
+            id="modal-modal-description"
+            component="span"
+            sx={{ mt: 2 }}>
+            {likes.map((like) => (
+              <div key={like.id} className="mb-4">
+                <img
+                  src={like.profile_picture}
+                  alt="pic"
+                  className="w-12 h-12 inline mx-2"
+                />
+                {like.first_name} {like.last_name}
+              </div>
+            ))}
+          </Typography>
+        </Box>
+      </Modal>
       <div className="flex flex-row items-center">
         <img
           src={post.profile_picture}
@@ -73,7 +114,7 @@ const Post = (props: IProps) => {
       <hr className="border-black"></hr>
       <div className="flex">
         <div
-          onClick={() => displayLikes(post.id)}
+          onClick={handleOpenLikes}
           className="w-1/2 text-center my-2 border-r-2 border-black hover:cursor-pointer">
           Likes: {likes.length}
         </div>
