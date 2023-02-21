@@ -4,12 +4,17 @@ import { UserContext } from "../contexts/UserContext";
 import Post, { IPost, ILike } from "./Post";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Modal from "@mui/material/Modal";
 
 const PostsList = () => {
   const [description, setDescription] = useState("");
   const [postLength, setPostLength] = useState(0);
   const [posts, setPosts] = useState([] as IPost[]);
   const [likes, setLikes] = useState([] as ILike[]);
+  const [showLikes, setShowLikes] = useState(false);
+  const [showLikesId, setShowLikesId] = useState(0);
   const { user } = useContext(UserContext);
   const { profile } = useContext(ProfileContext);
 
@@ -30,6 +35,15 @@ const PostsList = () => {
       setFirstPost((page - 1) * 10 - 1);
     }
     setLastPost(page * 10 - 1);
+  };
+
+  const displayLikes = (id: number) => {
+    setShowLikes(true);
+    setShowLikesId(id);
+  };
+
+  const handleClose = () => {
+    setShowLikes(false);
   };
 
   const createPost = async () => {
@@ -90,6 +104,34 @@ const PostsList = () => {
 
   return (
     <div className="col-span-2 bg-white rounded-lg p-4 overflow-auto">
+      {/* Modal to display likes list */}
+      <Modal
+        open={showLikes}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description">
+        <Box className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-black text-white p-4">
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            People who have liked this post:
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            {likes
+              .filter((like) => like.post_id === showLikesId)
+              .map((like) => (
+                <p className="mb-4">
+                  <img
+                    src={like.profile_picture}
+                    alt="pic"
+                    className="w-12 h-12 inline mx-2"
+                  />
+                  {like.first_name} {like.last_name}
+                </p>
+              ))}
+          </Typography>
+        </Box>
+      </Modal>
+
+      {/* Text Area to create Posts */}
       <div className="border-2 border-slate-300 rounded-lg mb-5 p-2">
         <textarea
           placeholder="Write a Post!"
@@ -105,11 +147,14 @@ const PostsList = () => {
           </button>
         </div>
       </div>
+
+      {/* List of Posts */}
       {currPosts.map((post) => (
         <Post
           key={post.id}
           post={post}
           likes={likes.filter((like) => like.post_id === post.id)}
+          displayLikes={displayLikes}
         />
       ))}
       <div className="flex justify-center">

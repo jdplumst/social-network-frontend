@@ -22,10 +22,11 @@ export interface ILike {
 interface IProps {
   post: IPost;
   likes: ILike[];
+  displayLikes: (id: number) => void;
 }
 
 const Post = (props: IProps) => {
-  const { post, likes } = props;
+  const { post, likes, displayLikes } = props;
   // const [load, setLoad] = useState(true);
   const { profile } = useContext(ProfileContext);
 
@@ -72,8 +73,8 @@ const Post = (props: IProps) => {
       <hr className="border-black"></hr>
       <div className="flex">
         <div
-          // onClick={getLikes}
-          className="w-1/2 text-center my-2 border-r-2 border-black">
+          onClick={() => displayLikes(post.id)}
+          className="w-1/2 text-center my-2 border-r-2 border-black hover:cursor-pointer">
           Likes: {likes.length}
         </div>
         <div className="w-1/2 text-center my-2">Comments: 0</div>
