@@ -1,8 +1,9 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ProfileContext } from "../contexts/ProfileContext";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
+import { UserContext } from "../contexts/UserContext";
 
 export interface IPost {
   id: number;
@@ -18,6 +19,7 @@ export interface IPost {
 export interface ILike {
   id: number;
   post_id: number;
+  user_id: number;
   first_name: string;
   last_name: string;
   profile_picture: string;
@@ -31,7 +33,11 @@ interface IProps {
 const Post = (props: IProps) => {
   const { post, likes } = props;
   // const [load, setLoad] = useState(true);
+  const [liked, setLiked] = useState(false);
+  const [stateLikes, setStateLikes] = useState(likes);
   const [showLikes, setShowLikes] = useState(false);
+  const [error, setError] = useState(null);
+  const { user } = useContext(UserContext);
   const { profile } = useContext(ProfileContext);
 
   // Format current date
@@ -66,6 +72,33 @@ const Post = (props: IProps) => {
     setShowLikes(false);
   };
 
+  const handleLike = async () => {
+    if (!liked) {
+      const response = await fetch(`/api/likes/${post.id}`, {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${user.token}`,
+          "Content-Type": "application/json"
+        }
+      });
+
+      const data = await response.json();
+
+      setStateLikes((prevStateLikes) => [data, ...prevStateLikes]);
+      setLiked(true);
+
+      console.log("created new like!");
+    }
+  };
+
+  useEffect(() => {
+    if (likes.filter((like) => like.user_id === user.id).length > 0) {
+      setLiked(true);
+      console.log("you like this!");
+    }
+    setStateLikes(likes);
+  }, [likes, user]);
+
   return (
     <div className="border-2 border-slate-300 rounded-lg mb-5 p-2">
       {/* Modal to display likes list */}
@@ -95,6 +128,8 @@ const Post = (props: IProps) => {
           </Typography>
         </Box>
       </Modal>
+
+      {/* Post Content */}
       <div className="flex flex-row items-center">
         <img
           src={post.profile_picture}
@@ -110,13 +145,24 @@ const Post = (props: IProps) => {
           </div>
         </span>
       </div>
-      <div className="text-2xl mx-2 my-2">{post.description}</div>
+      <div className="flex justify-between mx-2 my-2">
+        <span className="text-2xl">{post.description}</span>
+        <button
+          onClick={handleLike}
+          className={`ml-5 bg-purple-500 hover:bg-purple-700 hover:cursor-pointer ${
+            liked
+              ? `bg-gradient-to-tr from-cyan-500 via-blue-500 to-purple-500`
+              : `bg-purple-500`
+          } text-white px-2 py-1 rounded-lg font-bold`}>
+          {liked ? `Liked!` : "Like"}
+        </button>
+      </div>
       <hr className="border-black"></hr>
       <div className="flex">
         <div
           onClick={handleOpenLikes}
           className="w-1/2 text-center my-2 border-r-2 border-black hover:cursor-pointer">
-          Likes: {likes.length}
+          Likes: {stateLikes.length}
         </div>
         <div className="w-1/2 text-center my-2">Comments: 0</div>
       </div>
