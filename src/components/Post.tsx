@@ -83,12 +83,33 @@ const Post = (props: IProps) => {
       });
 
       const data = await response.json();
+      data.profile_picture = profile.profile_picture;
+      data.first_name = profile.first_name;
+      data.last_name = profile.last_name;
 
       setStateLikes((prevStateLikes) => [data, ...prevStateLikes]);
       setLiked(true);
 
       console.log("created new like!");
+    } else if (liked) {
+      const response = await fetch(`/api/likes/${post.id}`, {
+        method: "DELETE",
+        headers: {
+          "Authorization": `Bearer ${user.token}`,
+          "Content-Type": "application/json"
+        }
+      });
+
+      const data = await response.json();
+
+      setStateLikes((prevStateLikes) =>
+        prevStateLikes.filter((like) => like.user_id !== user.id)
+      );
+      setLiked(false);
+
+      console.log("deleted a like!");
     }
+    console.log(stateLikes);
   };
 
   useEffect(() => {
@@ -115,7 +136,7 @@ const Post = (props: IProps) => {
             id="modal-modal-description"
             component="span"
             sx={{ mt: 2 }}>
-            {likes.map((like) => (
+            {stateLikes.map((like) => (
               <div key={like.id} className="mb-4">
                 <img
                   src={like.profile_picture}
