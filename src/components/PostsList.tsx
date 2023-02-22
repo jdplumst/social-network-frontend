@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { ProfileContext } from "../contexts/ProfileContext";
 import { UserContext } from "../contexts/UserContext";
-import Post, { IPost, ILike } from "./Post";
+import Post, { IPost, ILike, IComment } from "./Post";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 
@@ -10,6 +10,7 @@ const PostsList = () => {
   const [postLength, setPostLength] = useState(0);
   const [posts, setPosts] = useState([] as IPost[]);
   const [likes, setLikes] = useState([] as ILike[]);
+  const [comments, setComments] = useState([] as IComment[]);
   const { user } = useContext(UserContext);
   const { profile } = useContext(ProfileContext);
 
@@ -67,7 +68,7 @@ const PostsList = () => {
   };
 
   useEffect(() => {
-    const getPostsAndLikes = async () => {
+    const getPostsLikesComments = async () => {
       // Fetch Posts
       const postsResponse = await fetch("/api/posts", {
         headers: { Authorization: `Bearer ${user.token}` }
@@ -83,9 +84,17 @@ const PostsList = () => {
       const likesData = await likesResponse.json();
       setLikes(likesData);
       console.log("fetched all likes!");
+
+      // Fetch Comments
+      const commentsResponse = await fetch("/api/comments", {
+        headers: { Authorization: `Bearer ${user.token}` }
+      });
+      const commentsData = await commentsResponse.json();
+      setComments(commentsData);
+      console.log("fetched all comments!");
     };
 
-    getPostsAndLikes();
+    getPostsLikesComments();
   }, [user]);
 
   return (
@@ -113,6 +122,7 @@ const PostsList = () => {
           key={post.id}
           post={post}
           likes={likes.filter((like) => like.post_id === post.id)}
+          comments={comments.filter((comment) => comment.post_id === post.id)}
         />
       ))}
       <div className="flex justify-center">

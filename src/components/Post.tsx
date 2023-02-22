@@ -25,17 +25,30 @@ export interface ILike {
   profile_picture: string;
 }
 
+export interface IComment {
+  id: number;
+  user_id: number;
+  post_id: number;
+  description: string;
+  create_date: Date;
+  modify_date: Date;
+  first_name: string;
+  last_name: string;
+  profile_picture: string;
+}
+
 interface IProps {
   post: IPost;
   likes: ILike[];
+  comments: IComment[];
 }
 
 const Post = (props: IProps) => {
-  const { post, likes } = props;
-  // const [load, setLoad] = useState(true);
+  const { post, likes, comments } = props;
   const [liked, setLiked] = useState(false);
   const [stateLikes, setStateLikes] = useState(likes);
   const [showLikes, setShowLikes] = useState(false);
+  const [stateComments, setStateComments] = useState(comments);
   const { user } = useContext(UserContext);
   const { profile } = useContext(ProfileContext);
 
@@ -108,16 +121,15 @@ const Post = (props: IProps) => {
 
       console.log("deleted a like!");
     }
-    console.log(stateLikes);
   };
 
   useEffect(() => {
     if (likes.filter((like) => like.user_id === user.id).length > 0) {
       setLiked(true);
-      console.log("you like this!");
     }
     setStateLikes(likes);
-  }, [likes, user]);
+    setStateComments(comments);
+  }, [likes, comments, user]);
 
   return (
     <div className="border-2 border-slate-300 rounded-lg mb-5 p-2">
@@ -184,7 +196,9 @@ const Post = (props: IProps) => {
           className="w-1/2 text-center my-2 border-r-2 border-black hover:cursor-pointer">
           Likes: {stateLikes.length}
         </div>
-        <div className="w-1/2 text-center my-2">Comments: 0</div>
+        <div className="w-1/2 text-center my-2 hover:cursor-pointer">
+          Comments: {stateComments.length}
+        </div>
       </div>
       <hr className="border-black"></hr>
       <div className="flex items-center mt-2 mx-2">
