@@ -9,6 +9,7 @@ const PostsList = () => {
   const [description, setDescription] = useState("");
   const [postLength, setPostLength] = useState(0);
   const [posts, setPosts] = useState([] as IPost[]);
+  const [postsError, setPostsError] = useState<null | string>(null);
   const [likes, setLikes] = useState([] as ILike[]);
   const [comments, setComments] = useState([] as IComment[]);
   const { user } = useContext(UserContext);
@@ -46,25 +47,28 @@ const PostsList = () => {
     });
 
     const data = await response.json();
-    console.log(data);
-
-    setPosts(
-      (prevPosts) =>
-        [
-          {
-            id: data.id,
-            user_id: data.user_id,
-            description: data.description,
-            create_date: data.create_date,
-            modify_date: data.modify_date,
-            first_name: profile.first_name,
-            last_name: profile.last_name,
-            profile_picture: profile.profile_picture
-          },
-          ...prevPosts
-        ] as IPost[]
-    );
-    console.log("created new post!");
+    if (response.ok) {
+      setPosts(
+        (prevPosts) =>
+          [
+            {
+              id: data.id,
+              user_id: data.user_id,
+              description: data.description,
+              create_date: data.create_date,
+              modify_date: data.modify_date,
+              first_name: profile.first_name,
+              last_name: profile.last_name,
+              profile_picture: profile.profile_picture
+            },
+            ...prevPosts
+          ] as IPost[]
+      );
+      setPostsError(null);
+      console.log("created new post!");
+    } else if (!response.ok) {
+      setPostsError(data.err);
+    }
   };
 
   useEffect(() => {
@@ -114,6 +118,7 @@ const PostsList = () => {
             Add Post
           </button>
         </div>
+        {postsError && <div className="text-red-500">{postsError}</div>}
       </div>
 
       {/* List of Posts */}
