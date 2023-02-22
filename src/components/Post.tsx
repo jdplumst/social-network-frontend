@@ -1,9 +1,9 @@
 import { useContext, useEffect, useState } from "react";
+import { UserContext } from "../contexts/UserContext";
 import { ProfileContext } from "../contexts/ProfileContext";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import { UserContext } from "../contexts/UserContext";
 
 export interface IPost {
   id: number;
@@ -49,6 +49,7 @@ const Post = (props: IProps) => {
   const [stateLikes, setStateLikes] = useState(likes);
   const [showLikes, setShowLikes] = useState(false);
   const [stateComments, setStateComments] = useState(comments);
+  const [showComments, setShowComments] = useState(false);
   const { user } = useContext(UserContext);
   const { profile } = useContext(ProfileContext);
 
@@ -84,6 +85,7 @@ const Post = (props: IProps) => {
     setShowLikes(false);
   };
 
+  // Like or Unlike a Post
   const handleLike = async () => {
     if (!liked) {
       const response = await fetch(`/api/likes/${post.id}`, {
@@ -123,6 +125,15 @@ const Post = (props: IProps) => {
     }
   };
 
+  // Open Comments Modal
+  const handleOpenComments = () => {
+    setShowComments(true);
+  };
+
+  const handleCloseComments = () => {
+    setShowComments(false);
+  };
+
   useEffect(() => {
     if (likes.filter((like) => like.user_id === user.id).length > 0) {
       setLiked(true);
@@ -155,6 +166,39 @@ const Post = (props: IProps) => {
                   className="w-12 h-12 inline mx-2"
                 />
                 {like.first_name} {like.last_name}
+              </div>
+            ))}
+          </Typography>
+        </Box>
+      </Modal>
+
+      {/* Modal to display comments list */}
+      <Modal
+        open={showComments}
+        onClose={handleCloseComments}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description">
+        <Box className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-black text-white p-4">
+          <Typography id="modal-modal-title" variant="h6" component="h2" mb={2}>
+            Comments on this post:
+          </Typography>
+          <Typography
+            id="modal-modal-description"
+            component="span"
+            sx={{ mt: 2 }}>
+            {stateComments.map((comment) => (
+              <div key={comment.id} className="mb-4 flex">
+                <img
+                  src={comment.profile_picture}
+                  alt="pic"
+                  className="w-12 h-12 inline mx-2"
+                />
+                <div>
+                  <div className="font-bold text-lg">
+                    {comment.first_name} {comment.last_name}
+                  </div>
+                  <div>{comment.description}</div>
+                </div>
               </div>
             ))}
           </Typography>
@@ -196,7 +240,9 @@ const Post = (props: IProps) => {
           className="w-1/2 text-center my-2 border-r-2 border-black hover:cursor-pointer">
           Likes: {stateLikes.length}
         </div>
-        <div className="w-1/2 text-center my-2 hover:cursor-pointer">
+        <div
+          onClick={handleOpenComments}
+          className="w-1/2 text-center my-2 hover:cursor-pointer">
           Comments: {stateComments.length}
         </div>
       </div>
