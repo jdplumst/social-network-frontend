@@ -17,7 +17,6 @@ const Navbar = () => {
     } else {
       setDropdown(false);
     }
-    console.log((e.target as HTMLElement).classList);
   };
 
   return (
