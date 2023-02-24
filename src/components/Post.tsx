@@ -50,6 +50,9 @@ const Post = (props: IProps) => {
   const [showLikes, setShowLikes] = useState(false);
   const [stateComments, setStateComments] = useState(comments);
   const [showComments, setShowComments] = useState(false);
+  const [commentDescription, setCommentDescription] = useState("");
+  const [commentLength, setCommentLength] = useState(0);
+  const [commentsError, setCommentsError] = useState<null | string>(null);
   const { user } = useContext(UserContext);
   const { profile } = useContext(ProfileContext);
 
@@ -130,8 +133,52 @@ const Post = (props: IProps) => {
     setShowComments(true);
   };
 
+  // Close Comments Modal
   const handleCloseComments = () => {
     setShowComments(false);
+  };
+
+  const handleCommentInput = (e: React.FormEvent<HTMLTextAreaElement>) => {
+    setCommentDescription((e.target as HTMLTextAreaElement).value);
+    setCommentLength((e.target as HTMLTextAreaElement).value.length);
+  };
+
+  // Create Comment
+  const createComment = async () => {
+    const response = await fetch(`api/comments/${post.id}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${user.token}`
+      },
+      body: JSON.stringify({ description: commentDescription })
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      setStateComments(
+        (prevStateComments) =>
+          [
+            ...prevStateComments,
+            {
+              id: data.id,
+              user_id: data.user_id,
+              post_id: data.post_id,
+              description: data.description,
+              create_date: data.create_date,
+              modify_date: data.modify_date,
+              first_name: profile.first_name,
+              last_name: profile.last_name,
+              profile_picture: profile.profile_picture
+            }
+          ] as IComment[]
+      );
+      setCommentsError(null);
+      console.log("created new comment!");
+    } else if (!response.ok) {
+      setCommentsError(data.err);
+    }
   };
 
   useEffect(() => {
@@ -253,10 +300,17 @@ const Post = (props: IProps) => {
           alt="user-pic"
           className="w-12 h-12 inline"
         />
-        <textarea
-          maxLength={100}
-          className="ml-5 w-4/5 p-1 border-2 border-black"></textarea>
-        <button className="ml-5 bg-purple-500 hover:bg-purple-700 hover:cursor-pointer text-white px-4 py-2 rounded-lg font-bold">
+        <div className="flex flex-col ml-5 w-4/5">
+          <textarea
+            maxLength={255}
+            onInput={handleCommentInput}
+            className="p-1 border-2 border-black"></textarea>
+          <p className="text-[12px]">{commentLength}/255</p>
+          {commentsError && <p className="text-red-500">{commentsError}</p>}
+        </div>
+        <button
+          onClick={createComment}
+          className="ml-5 bg-purple-500 hover:bg-purple-700 hover:cursor-pointer text-white px-4 py-2 rounded-lg font-bold">
           Reply
         </button>
       </div>
