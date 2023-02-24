@@ -62,7 +62,11 @@ const Navbar = () => {
               dropdown ? "block" : "hidden"
             } absolute z-10 flex flex-col divide-solid divide-y-2 divide-slate-300 border-2 border-solid border-slate-300 bg-white w-32`}>
             <button className="hover:bg-slate-300">View Profile</button>
-            <button className="hover:bg-slate-300">Edit Profile</button>
+            <Link to="/editprofile">
+              <button className="hover:bg-slate-300 w-full">
+                Edit Profile
+              </button>
+            </Link>
             <button className="hover:bg-slate-300" onClick={logout}>
               Logout
             </button>

@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ProfileContext } from "./contexts/ProfileContext";
 import { UserContext } from "./contexts/UserContext";
+import EditProfile from "./pages/EditProfile";
 import Home from "./pages/Home";
 import Intro from "./pages/Intro";
 import Loading from "./pages/Loading";
@@ -109,6 +110,20 @@ const App = () => {
             element={
               access === "logged in and finished onboarding" ? (
                 <Home />
+              ) : access === "logged in but not started onboarding" ? (
+                <Navigate to="/onboarding/info" />
+              ) : access === "logged in but not finished onboarding" ? (
+                <Navigate to="/onboarding/picture" />
+              ) : (
+                <Navigate to="/" />
+              )
+            }
+          />
+          <Route
+            path="/editprofile"
+            element={
+              access === "logged in and finished onboarding" ? (
+                <EditProfile />
               ) : access === "logged in but not started onboarding" ? (
                 <Navigate to="/onboarding/info" />
               ) : access === "logged in but not finished onboarding" ? (
