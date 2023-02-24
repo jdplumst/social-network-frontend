@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { MouseEventHandler, useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { ProfileContext } from "../contexts/ProfileContext";
 import useLogout from "../hooks/useLogout";
@@ -11,18 +11,19 @@ const Navbar = () => {
   const { logout } = useLogout();
   const { profile, profiles } = useContext(ProfileContext);
 
-  const toggleDropdown = (e: MouseEvent) => {
-    if ((e.target as HTMLElement).classList.contains("picture") && !dropdown) {
+  const toggleDropdown = (e: any) => {
+    if ((e.target as HTMLElement).classList.contains("dropdown") && !dropdown) {
       setDropdown(true);
     } else {
       setDropdown(false);
     }
+    console.log((e.target as HTMLElement).classList);
   };
 
-  document.addEventListener("click", toggleDropdown);
-
   return (
-    <nav className="relative h-1/6 w-full flex flex-wrap items-center justify-between px-14 py-4 bg-purple-500 shadow-lg navbar navbar-expand-lg navbar-light border-b-2 border-black border-solid">
+    <nav
+      onClick={toggleDropdown}
+      className="relative h-1/6 w-full flex flex-wrap items-center justify-between px-14 py-4 bg-purple-500 shadow-lg navbar navbar-expand-lg navbar-light border-b-2 border-black border-solid">
       <Link to="/">
         <h1 className="text-4xl">Social Network</h1>
       </Link>
@@ -50,10 +51,10 @@ const Navbar = () => {
           />
         </Stack>
       </div>
-      <div className="flex items-center gap-10">
+      <div className="flex items-center gap-10 hover:cursor-pointer dropdown">
         <div className="relative">
           <img
-            className="picture w-32 h-24 hover:cursor-pointer"
+            className="picture w-32 h-24 dropdown"
             src={profile.profile_picture}
             alt="profilepic"
           />
@@ -72,7 +73,7 @@ const Navbar = () => {
             </button>
           </div>
         </div>
-        <span>
+        <span className="dropdown">
           {profile.first_name} {profile.last_name}
         </span>
       </div>
