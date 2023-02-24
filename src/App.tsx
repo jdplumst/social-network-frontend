@@ -4,6 +4,7 @@ import { ProfileContext } from "./contexts/ProfileContext";
 import { UserContext } from "./contexts/UserContext";
 import Home from "./pages/Home";
 import Intro from "./pages/Intro";
+import Loading from "./pages/Loading";
 import Login from "./pages/Login";
 import OnboardingInfo from "./pages/OnboardingInfo";
 import OnboardingPicture from "./pages/OnboardingPicture";
@@ -30,7 +31,7 @@ const App = () => {
   return (
     <BrowserRouter>
       {access === "loading" ? (
-        <div>loading!</div>
+        <Loading />
       ) : (
         <Routes>
           <Route
@@ -117,6 +118,7 @@ const App = () => {
               )
             }
           />
+          <Route path="/loading" element={<Loading />} />
         </Routes>
       )}
     </BrowserRouter>
