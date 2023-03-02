@@ -28,7 +28,6 @@ export const ProfileContextProvider = ({
   children
 }: IProfileContextProviderProps) => {
   const [profiles, setProfiles] = useState([] as IProfile[]);
-  // const [profile, setProfile] = useState({} as IProfile);
   const [profile, setProfile] = useState({ user_id: "-1" } as IProfile);
   const { user, setUser } = useContext(UserContext);
 
@@ -41,9 +40,11 @@ export const ProfileContextProvider = ({
       if (!response.ok) {
         setUser({} as IUser);
         localStorage.removeItem("user");
-      } else {
+      } else if (data) {
         setProfile(data);
         console.log("fetched profile!");
+      } else {
+        setProfile({} as IProfile);
       }
     };
 
