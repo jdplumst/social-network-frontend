@@ -15,7 +15,7 @@ const EditProfile = () => {
     <div className="h-screen">
       <Navbar />
       <div className="grid grid-cols-3 h-5/6">
-        <div className="flex flex-col items-end  gap-10 text-right bg-slate-400 col-span-1 p-10">
+        <div className="flex flex-col items-end gap-10 text-right bg-slate-400 col-span-1 p-10">
           <button
             onClick={() => setMenu(Menu.Info)}
             className={`${

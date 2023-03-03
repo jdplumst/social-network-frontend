@@ -4,7 +4,9 @@ import { UserContext } from "../contexts/UserContext";
 import useLogout from "../hooks/useLogout";
 
 const OnboardingPicture = () => {
-  const [profilePicture, setProfilePicture] = useState("earth");
+  const [profilePicture, setProfilePicture] = useState(
+    "https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1074&q=80"
+  );
   const [error, setError] = useState(null);
   const { user } = useContext(UserContext);
   const { setProfile } = useContext(ProfileContext);
@@ -142,7 +144,7 @@ const OnboardingPicture = () => {
                 : "border-white border-solid border-8"
             } w-56 h-56`}>
             <img
-              className="w-full h-full"
+              className="w-52 h-52"
               onClick={() => {
                 setProfilePicture(
                   "https://images.unsplash.com/photo-1504215680853-026ed2a45def?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
