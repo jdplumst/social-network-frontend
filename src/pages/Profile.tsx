@@ -38,7 +38,15 @@ const Profile = () => {
       ) : (
         <div>
           <h1>This is the profile page!</h1>
-          <p>The id is {id}</p>
+          <p>
+            The id is {id} {typeof id}
+          </p>
+          {parseInt(profile.user_id) === parseInt(id || "-1") && (
+            <p>This is your own profile!</p>
+          )}
+          <p>{currProfile.user_id}</p>
+          <p>{currProfile.first_name}</p>
+          <p>{currProfile.last_name}</p>
         </div>
       )}
     </>
