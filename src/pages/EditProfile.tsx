@@ -31,7 +31,7 @@ const EditProfile = () => {
             Profile Picture
           </button>
         </div>
-        <div className="bg-slate-300 col-span-2 p-10">
+        <div className="bg-slate-300 col-span-2">
           {menu === Menu.Info ? <EditInfo /> : <EditPicture />}
         </div>
       </div>
