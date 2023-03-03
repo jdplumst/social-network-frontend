@@ -9,6 +9,7 @@ import Loading from "./pages/Loading";
 import Login from "./pages/Login";
 import OnboardingInfo from "./pages/OnboardingInfo";
 import OnboardingPicture from "./pages/OnboardingPicture";
+import Profile from "./pages/Profile";
 import Signup from "./pages/Signup";
 import "./styles/index.css";
 
@@ -133,6 +134,7 @@ const App = () => {
               )
             }
           />
+          <Route path="/profile/:id" element={<Profile />} />
           <Route path="/loading" element={<Loading />} />
         </Routes>
       )}
