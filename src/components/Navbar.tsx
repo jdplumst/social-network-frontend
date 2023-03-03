@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ProfileContext } from "../contexts/ProfileContext";
 import useLogout from "../hooks/useLogout";
@@ -28,26 +28,28 @@ const Navbar = () => {
       </Link>
       <div className="text-white">
         <Stack spacing={2} sx={{ width: 300 }}>
-          <Autocomplete
-            id="free-solo-demo"
-            freeSolo
-            className="bg-white"
-            options={profiles
-              .filter((profile) => profile.profile_completed)
-              .map((profile) => profile.first_name + " " + profile.last_name)}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                placeholder="Search User"
-                InputLabelProps={{
-                  shrink: false,
-                  style: {
-                    color: "black"
-                  }
-                }}
-              />
-            )}
-          />
+          {profiles.length > 0 && (
+            <Autocomplete
+              id="free-solo-demo"
+              freeSolo
+              className="bg-white"
+              options={profiles
+                .filter((profile) => profile.profile_completed)
+                .map((profile) => profile.first_name + " " + profile.last_name)}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  placeholder="Search User"
+                  InputLabelProps={{
+                    shrink: false,
+                    style: {
+                      color: "black"
+                    }
+                  }}
+                />
+              )}
+            />
+          )}
         </Stack>
       </div>
       <div className="flex items-center gap-10 hover:cursor-pointer dropdown">

@@ -35,7 +35,7 @@ const Profile = () => {
       getProfile();
       getProfiles();
     }
-  }, [id, user, getProfiles]);
+  }, [id, user]);
 
   return (
     <div>
@@ -79,16 +79,18 @@ const Profile = () => {
                 <strong>Following: </strong>0
               </p>
             </div>
-            <div className="flex justify-center pb-5">
-              <button
-                className={`hover:cursor-pointer ${
-                  following
-                    ? `bg-gradient-to-tr from-cyan-500 via-blue-500 to-purple-500 hover:bg-gradient-to-tr hover:from-cyan-700 hover:via-blue-700 hover:to-purple-700`
-                    : `bg-purple-500 hover:bg-purple-700`
-                } text-white px-2 py-1 rounded-lg font-bold w-1/5`}>
-                {following ? `Following` : `Follow`}
-              </button>
-            </div>
+            {profile.user_id !== currProfile.user_id && (
+              <div className="flex justify-center pb-5">
+                <button
+                  className={`hover:cursor-pointer ${
+                    following
+                      ? `bg-gradient-to-tr from-cyan-500 via-blue-500 to-purple-500 hover:bg-gradient-to-tr hover:from-cyan-700 hover:via-blue-700 hover:to-purple-700`
+                      : `bg-purple-500 hover:bg-purple-700`
+                  } text-white px-2 py-1 rounded-lg font-bold w-1/5`}>
+                  {following ? `Following` : `Follow`}
+                </button>
+              </div>
+            )}
           </div>
         </div>
       )}
