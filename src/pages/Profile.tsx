@@ -4,6 +4,7 @@ import { UserContext } from "../contexts/UserContext";
 import { ProfileContext, IProfile } from "../contexts/ProfileContext";
 import Navbar from "../components/Navbar";
 import useGetProfiles from "../hooks/useGetProfiles";
+import Post, { IPost } from "../components/Post";
 
 const Profile = () => {
   const { id } = useParams();
@@ -12,27 +13,37 @@ const Profile = () => {
   const { getProfiles } = useGetProfiles();
   const [currProfile, setCurrProfile] = useState({} as IProfile);
   const [following, setFollowing] = useState(false);
+  const [posts, setPosts] = useState([] as IPost[]);
   const [error, setError] = useState<null | string>(null);
 
   useEffect(() => {
-    const getProfile = async () => {
-      const response = await fetch(`/api/profiles/${id}`, {
+    const getProfileandPosts = async () => {
+      const profileResponse = await fetch(`/api/profiles/${id}`, {
         headers: { Authorization: `Bearer ${user.token}` }
       });
-      const data = await response.json();
+      const profileData = await profileResponse.json();
 
-      if (!response.ok) {
-        setError(data.error);
-      } else if (!data) {
+      if (!profileResponse.ok) {
+        setError(profileData.error);
+      } else if (!profileData) {
         setError("No such profile");
       } else {
         setError(null);
-        setCurrProfile(data);
+        setCurrProfile(profileData);
         console.log("fetched profile!");
       }
+
+      // Fetch Posts
+      const postsResponse = await fetch("/api/posts", {
+        headers: { Authorization: `Bearer ${user.token}` }
+      });
+      const postsData = await postsResponse.json();
+      setPosts(postsData);
+      console.log("fetched all posts!");
     };
+
     if (user.token) {
-      getProfile();
+      getProfileandPosts();
       getProfiles();
     }
   }, [id, user]);
@@ -92,6 +103,11 @@ const Profile = () => {
               </div>
             )}
           </div>
+          {posts
+            .filter((post) => post.user_id === parseInt(currProfile.user_id))
+            .map((post) => (
+              <div key={post.id}>{post.description}</div>
+            ))}
         </div>
       )}
     </div>
