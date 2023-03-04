@@ -4,7 +4,7 @@ import { UserContext } from "../contexts/UserContext";
 import { ProfileContext, IProfile } from "../contexts/ProfileContext";
 import Navbar from "../components/Navbar";
 import useGetProfiles from "../hooks/useGetProfiles";
-import Post, { IPost } from "../components/Post";
+import Post, { IComment, ILike, IPost } from "../components/Post";
 
 const Profile = () => {
   const { id } = useParams();
@@ -14,10 +14,13 @@ const Profile = () => {
   const [currProfile, setCurrProfile] = useState({} as IProfile);
   const [following, setFollowing] = useState(false);
   const [posts, setPosts] = useState([] as IPost[]);
+  const [likes, setLikes] = useState([] as ILike[]);
+  const [comments, setComments] = useState([] as IComment[]);
   const [error, setError] = useState<null | string>(null);
 
   useEffect(() => {
     const getProfileandPosts = async () => {
+      // Fetch Profile
       const profileResponse = await fetch(`/api/profiles/${id}`, {
         headers: { Authorization: `Bearer ${user.token}` }
       });
@@ -40,8 +43,24 @@ const Profile = () => {
       const postsData = await postsResponse.json();
       if (postsResponse.ok) {
         setPosts(postsData);
-        console.log("fetched all posts!");
+        console.log("fetched posts for user!");
       }
+
+      // Fetch Likes
+      const likesResponse = await fetch(`/api/likes`, {
+        headers: { Authorization: `Bearer ${user.token}` }
+      });
+      const likesData = await likesResponse.json();
+      setLikes(likesData);
+      console.log("fetched all likes!");
+
+      // Fetch Comments
+      const commentsResponse = await fetch("/api/comments", {
+        headers: { Authorization: `Bearer ${user.token}` }
+      });
+      const commentsData = await commentsResponse.json();
+      setComments(commentsData);
+      console.log("fetched all comments!");
     };
 
     if (user.token) {
@@ -109,7 +128,14 @@ const Profile = () => {
             {posts
               .filter((post) => post.user_id === parseInt(currProfile.user_id))
               .map((post) => (
-                <Post key={post.id} post={post} likes={[]} comments={[]} />
+                <Post
+                  key={post.id}
+                  post={post}
+                  likes={likes.filter((like) => like.post_id === post.id)}
+                  comments={comments.filter(
+                    (comment) => comment.post_id === post.id
+                  )}
+                />
               ))}
           </div>
         </div>

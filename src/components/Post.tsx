@@ -145,7 +145,7 @@ const Post = (props: IProps) => {
 
   // Create Comment
   const createComment = async () => {
-    const response = await fetch(`api/comments/${post.id}`, {
+    const response = await fetch(`/api/comments/${post.id}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
