@@ -124,18 +124,19 @@ const Profile = () => {
               </div>
             )}
           </div>
-          <div className="grid grid-cols-2 gap-5 p-10">
+          <div className="grid grid-cols-2 gap-y-10 p-10 w-screen">
             {posts
               .filter((post) => post.user_id === parseInt(currProfile.user_id))
               .map((post) => (
-                <Post
-                  key={post.id}
-                  post={post}
-                  likes={likes.filter((like) => like.post_id === post.id)}
-                  comments={comments.filter(
-                    (comment) => comment.post_id === post.id
-                  )}
-                />
+                <div key={post.id} className="justify-self-center w-10/12">
+                  <Post
+                    post={post}
+                    likes={likes.filter((like) => like.post_id === post.id)}
+                    comments={comments.filter(
+                      (comment) => comment.post_id === post.id
+                    )}
+                  />
+                </div>
               ))}
           </div>
         </div>
