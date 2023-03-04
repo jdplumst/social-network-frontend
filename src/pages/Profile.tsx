@@ -48,7 +48,7 @@ const Profile = () => {
       getProfileandPosts();
       getProfiles();
     }
-  }, [id, user, getProfiles]);
+  }, [id, user]);
 
   return (
     <div>
@@ -105,11 +105,13 @@ const Profile = () => {
               </div>
             )}
           </div>
-          {posts
-            .filter((post) => post.user_id === parseInt(currProfile.user_id))
-            .map((post) => (
-              <div key={post.id}>{post.description}</div>
-            ))}
+          <div className="grid grid-cols-2 gap-5 p-10">
+            {posts
+              .filter((post) => post.user_id === parseInt(currProfile.user_id))
+              .map((post) => (
+                <Post key={post.id} post={post} likes={[]} comments={[]} />
+              ))}
+          </div>
         </div>
       )}
     </div>

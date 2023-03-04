@@ -190,7 +190,7 @@ const Post = (props: IProps) => {
   }, [likes, comments, user]);
 
   return (
-    <div className="border-2 border-slate-300 rounded-lg mb-5 p-2">
+    <div className="bg-white border-2 border-slate-300 rounded-lg mb-5 p-2">
       {/* Modal to display likes list */}
       <Modal
         open={showLikes}
