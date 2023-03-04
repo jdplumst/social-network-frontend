@@ -34,19 +34,21 @@ const Profile = () => {
       }
 
       // Fetch Posts
-      const postsResponse = await fetch("/api/posts", {
+      const postsResponse = await fetch(`/api/posts/${id}`, {
         headers: { Authorization: `Bearer ${user.token}` }
       });
       const postsData = await postsResponse.json();
-      setPosts(postsData);
-      console.log("fetched all posts!");
+      if (postsResponse.ok) {
+        setPosts(postsData);
+        console.log("fetched all posts!");
+      }
     };
 
     if (user.token) {
       getProfileandPosts();
       getProfiles();
     }
-  }, [id, user]);
+  }, [id, user, getProfiles]);
 
   return (
     <div>
