@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
-import { ProfileContext } from "../contexts/ProfileContext";
+import { IProfile, ProfileContext } from "../contexts/ProfileContext";
 import useLogout from "../hooks/useLogout";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
@@ -10,6 +10,12 @@ const Navbar = () => {
   const [dropdown, setDropdown] = useState(false);
   const { logout } = useLogout();
   const { profile, profiles } = useContext(ProfileContext);
+
+  const handleSearch = (e: any, value: IProfile | null) => {
+    if (value) {
+      window.location.href = `/profile/${value.user_id}`;
+    }
+  };
 
   const toggleDropdown = (e: any) => {
     if ((e.target as HTMLElement).classList.contains("dropdown") && !dropdown) {
@@ -31,11 +37,12 @@ const Navbar = () => {
           {profiles.length > 0 && (
             <Autocomplete
               id="free-solo-demo"
-              freeSolo
+              // freeSolo
+              autoSelect
               className="bg-white"
-              options={profiles
-                .filter((profile) => profile.profile_completed)
-                .map((profile) => profile.first_name + " " + profile.last_name)}
+              options={profiles.filter((p) => p.profile_completed)}
+              getOptionLabel={(p) => p.first_name + " " + p.last_name}
+              onChange={handleSearch}
               renderInput={(params) => (
                 <TextField
                   {...params}
