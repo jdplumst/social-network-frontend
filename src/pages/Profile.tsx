@@ -124,7 +124,10 @@ const Profile = () => {
               </div>
             )}
           </div>
-          <div className="grid grid-cols-2 gap-y-10 p-10 w-screen">
+          <div
+            className={`grid ${
+              posts.length > 1 ? "grid-cols-2 w-screen" : "w-3/4"
+            } gap-y-10 p-10`}>
             {posts
               .filter((post) => post.user_id === parseInt(currProfile.user_id))
               .map((post) => (
