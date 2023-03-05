@@ -63,7 +63,11 @@ const Navbar = () => {
             className={`${
               dropdown ? "block" : "hidden"
             } absolute z-10 flex flex-col divide-solid divide-y-2 divide-slate-300 border-2 border-solid border-slate-300 bg-white w-32`}>
-            <button className="hover:bg-slate-300">View Profile</button>
+            <Link to={`/profile/${profile.user_id}`}>
+              <button className="hover:bg-slate-300 w-full">
+                View Profile
+              </button>
+            </Link>
             <Link to="/editprofile">
               <button className="hover:bg-slate-300 w-full">
                 Edit Profile
