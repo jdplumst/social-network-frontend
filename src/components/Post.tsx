@@ -4,6 +4,7 @@ import { ProfileContext } from "../contexts/ProfileContext";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
+import { Link } from "react-router-dom";
 
 export interface IPost {
   id: number;
@@ -260,9 +261,11 @@ const Post = (props: IProps) => {
           className="w-12 h-12 inline mx-2"
         />
         <span className="flex flex-col ml-2">
-          <div className="text-2xl">
-            {post.first_name} {post.last_name} {post.id}
-          </div>
+          <Link to={`/profile/${post.user_id}`}>
+            <div className="text-2xl hover:cursor-pointer">
+              {post.first_name} {post.last_name}
+            </div>
+          </Link>
           <div>
             {currWeek} {currMonth} {currDay}, {currYear}
           </div>
