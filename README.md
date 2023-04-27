@@ -1,6 +1,6 @@
 # Project Description
 
-This app is currently being worked on.
+This app is now being built with a Next.js monorepo instead. You can find the repository [here](https://github.com/jdplumst/social-network).
 
 This is a social media page inspired by Facebook. This repository contains the frontend code of the app.
 
